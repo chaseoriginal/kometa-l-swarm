@@ -16,7 +16,7 @@ services:
       - KOMETA_TEST=${KOMETA_TEST:-False}
       - KOMETA_NO_MISSING=${KOMETA_NO_MISSING:-False}
     volumes:
-      - kometa.config:/config
+      - /var/lib/docker/volumes/kometa-l-swarm_config:/config
     deploy:
       mode: replicated
       replicas: 1
@@ -25,10 +25,6 @@ services:
           - node.labels.deployment.target.kometa == true
       restart_policy:
         condition: any
-
-volumes:
-  kometa.config:
-    name: kometa-l-swarm.config
 
 networks:
   kometa-l-swarm_default:
