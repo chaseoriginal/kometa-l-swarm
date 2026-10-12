@@ -1,0 +1,36 @@
+x-base: &base
+  restart: unless-stopped
+  networks:
+    - kometa-l-swarm_default
+
+services:
+  kometa:
+    <<: *base
+    image: ${image}
+    container_name: ${container_name}
+    user: ${PUID}:${PGID}
+    environment:
+      - TZ=${TZ}
+      - KOMETA_TIME=${KOMETA_TIME:-03:00}
+      - KOMETA_RUN=true
+      - KOMETA_TEST=${KOMETA_TEST:-False}
+      - KOMETA_NO_MISSING=${KOMETA_NO_MISSING:-False}
+    volumes:
+      - kometa.config:/config
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.labels.deployment.target.kometa == true
+      restart_policy:
+        condition: any
+
+volumes:
+  kometa.config:
+    name: kometa-l-swarm.config
+
+networks:
+  kometa-l-swarm_default:
+    external: true
+    name: kometa-l-swarm_default
