@@ -7,7 +7,7 @@ services:
   kometa:
     <<: *base
     image: ${image}
-    container_name: ${container_name}
+    container_name: ${CNAME}
     user: ${PUID}:${PGID}
     environment:
       - TZ=${TZ}
@@ -16,7 +16,7 @@ services:
       - KOMETA_TEST=${KOMETA_TEST:-False}
       - KOMETA_NO_MISSING=${KOMETA_NO_MISSING:-False}
     volumes:
-      - /var/lib/docker/volumes/kometa-l-swarm_config:/config
+      - kometa-l-swarm_config:/config
     deploy:
       mode: replicated
       replicas: 1
